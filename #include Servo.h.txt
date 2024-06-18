@@ -1,0 +1,39 @@
+#include <Servo.h>
+
+Servo myservo;
+
+int irSensor1 = A0;
+int irSensor2 = A1;
+int threshold = 50;
+int stepSize = 5;
+
+void setup() 
+{
+  myservo.attach(9);
+  pinMode(irSensor1, INPUT);
+  pinMode(irSensor2, INPUT);
+  myservo.write(90);
+}
+
+void loop()
+ {
+  int sensorValue1 = analogRead(irSensor1);
+  int sensorValue2 = analogRead(irSensor2);
+
+  int difference = sensorValue1 - sensorValue2;
+
+  if (abs(difference) > threshold)
+   {
+    int currentPos = myservo.read();
+    if (difference > 0) 
+    {
+      myservo.write(currentPos - stepSize);
+    } 
+    else 
+    {
+      myservo.write(currentPos + stepSize);
+    }
+  }
+
+  delay(20);
+}
